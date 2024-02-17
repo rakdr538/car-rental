@@ -11,4 +11,5 @@ public interface RentalService {
     RentalDetail getRentalDetailsById(Integer id);
     List<RentalDetail> getAllRentals();
     List<RentalDetail> getAllRentalsInProgress(LocalDate from, LocalDate to);
+    List<RentalDetail> getAllRentalsDetailsByVehicleId(String vehiclePlateNo, LocalDate fromDate, LocalDate toDate);
 }

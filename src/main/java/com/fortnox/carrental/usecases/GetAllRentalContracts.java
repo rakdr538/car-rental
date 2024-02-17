@@ -1,8 +1,8 @@
 package com.fortnox.carrental.usecases;
 
-import com.fortnox.carrental.service.RentalService;
 import com.fortnox.carrental.dto.Rental;
 import com.fortnox.carrental.dto.RentalDetailsMapper;
+import com.fortnox.carrental.service.RentalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GetAllRentalContracts {
     private final RentalService service;
-
 
     public List<Rental> doGet() {
         var allContracts = service.getAllRentals();

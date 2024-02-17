@@ -23,4 +23,17 @@ public interface RentalDetailsRepository extends JpaRepository<RentalDetail, Int
     List<RentalDetail> getAllRentalsBetween(@Param("statuses") List<RentalStatus> statuses,
                                             @Param("from") LocalDate from,
                                             @Param("to") LocalDate to);
+
+    @Query( value = """
+                select * from rental_details
+                where vehicle_id = :vehicle
+                and rental_status in :statuses
+                and (collected_at between :from and :to
+                or dropped_at between :from and :to)
+                """,
+            nativeQuery = true)
+    List<RentalDetail> getAllRentalByVehicleAndDates(@Param("vehicle") String vehicle,
+                                                     @Param("statuses") List<RentalStatus> statuses,
+                                                     @Param("from") LocalDate from,
+                                                     @Param("to") LocalDate to);
 }

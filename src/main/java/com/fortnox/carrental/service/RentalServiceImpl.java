@@ -42,4 +42,10 @@ public class RentalServiceImpl implements RentalService{
                         from,
                         to);
     }
+
+    @Override
+    public List<RentalDetail> getAllRentalsDetailsByVehicleId(String vehiclePlateNo, LocalDate fromDate, LocalDate toDate) {
+        return rentalDetailsRepository.getAllRentalByVehicleAndDates(vehiclePlateNo,
+                List.of(RentalStatus.IN_PROGRESS, RentalStatus.RESERVED),fromDate, toDate);
+    }
 }

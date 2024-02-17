@@ -32,10 +32,10 @@ public class RenterActionsController {
         return createRentalContractUseCase.doCreate(rentalRequest);
     }
 
-    // @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/rent/{id}")
     @ResponseStatus(HttpStatus.OK)
     Rental getRentalContractById(@NotNull @PathVariable Integer id) {
+        // this is to demo that the functionality can be extended.
         return getRentalContractsUseCase.getRentalContractById(id);
     }
 

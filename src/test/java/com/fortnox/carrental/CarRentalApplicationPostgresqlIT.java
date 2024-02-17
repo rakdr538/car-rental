@@ -7,7 +7,6 @@ import com.fortnox.carrental.dao.Vehicle;
 import com.fortnox.carrental.repository.RentalDetailsRepository;
 import com.fortnox.carrental.repository.RentingEntityRepository;
 import com.fortnox.carrental.repository.VehicleRepository;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +34,6 @@ public class CarRentalApplicationPostgresqlIT {
     private static final List<RentingEntity> renters = new ArrayList<>();
 
     @Test
-    @Order(1)
     void testConnectionsToDb() {
         assertNotNull(rentalDetailsRepository);
         assertNotNull(vehicleRepository);
@@ -45,47 +43,55 @@ public class CarRentalApplicationPostgresqlIT {
     @Test
     void testInsertionsToDb() {
         createSomeData();
-
-        vehicles
-                .stream()
-                .map(vehicle -> vehicleRepository.save(vehicle))
-                .toList()
-                .forEach(vehicle -> assertNotNull(vehicle.getVehiclePlateNo()));
-        renters
-                .stream()
-                .map(renter -> rentingEntityRepository.save(renter))
-                .toList()
-                .forEach(renter -> assertNotNull(renter.getEmail()));
-        rentalDetails
-                .stream()
-                .map(rental -> rentalDetailsRepository.save(rental))
-                .toList()
-                .forEach(rental -> assertNotNull(rental.getId()));
+        insertData();
     }
 
     @Test
     void testFetchAllRentalsWithDates() {
-        testInsertionsToDb();
-        assertFalse(rentalDetails.isEmpty());
+        if (rentalDetails.isEmpty()) {
+            createSomeData();
+            insertData();
+        }
 
         var rentals = rentalDetailsRepository.getAllRentalsBetween(
                 List.of(RentalStatus.IN_PROGRESS, RentalStatus.RESERVED),
-                LocalDate.of(2024,2,16),
-                LocalDate.of(2024,2,20));
+                LocalDate.of(2024, 2, 16),
+                LocalDate.of(2024, 2, 20));
 
         assertFalse(rentals.isEmpty());
         assertEquals(2, rentals.size());
     }
 
+    @Test
+    void testAdminGetAllRentals() {
+        if (rentalDetails.isEmpty()) {
+            createSomeData();
+            insertData();
+        }
+
+        var rentalDetails = rentalDetailsRepository.findAll();
+        assertEquals(5, rentalDetails.size());
+        assertEquals(5, rentalDetails.stream().map(r -> r.getVehicle().getVehiclePlateNo()).toList().size());
+    }
+
     private void createSomeData() {
-        creatingAndAddingVehicles();
-        creatingAndAddingRenters();
-        creatingAndAddingRentalDetails();
+        if (vehicles.isEmpty()) {
+            creatingAndAddingVehicles();
+        }
+        if (renters.isEmpty()) {
+            creatingAndAddingRenters();
+        }
+        if (rentalDetails.isEmpty()) {
+            creatingAndAddingRentalDetails();
+        }
     }
 
     private void creatingAndAddingRentalDetails() {
-        rentalDetails.add(getRentalDetail(renters.getFirst(),
-                vehicles.getFirst(),
+        assertEquals(4, vehicles.size());
+        assertEquals(4, renters.size());
+
+        rentalDetails.add(getRentalDetail(renters.get(0),
+                vehicles.get(0),
                 LocalDate.of(2024, 2, 15),
                 LocalDate.of(2024, 2, 17),
                 12345L,
@@ -159,5 +165,30 @@ public class CarRentalApplicationPostgresqlIT {
                 .vehicleModel(model)
                 .pricePerDay(amt)
                 .build();
+    }
+
+    private void insertData() {
+        vehicles
+                .stream()
+                .map(vehicle -> vehicleRepository.save(vehicle))
+                .toList()
+                .forEach(vehicle -> assertNotNull(vehicle.getVehiclePlateNo()));
+        renters
+                .stream()
+                .map(renter -> rentingEntityRepository.save(renter))
+                .toList()
+                .forEach(renter -> assertNotNull(renter.getEmail()));
+        rentalDetails
+                .stream()
+                .map(rental -> rentalDetailsRepository.save(rental))
+                .toList()
+                .forEach(rental -> assertNotNull(rental.getId()));
+
+        rentalDetailsRepository.save(getRentalDetail(renters.get(3),
+                vehicles.get(3),
+                LocalDate.of(2024, 3, 21),
+                LocalDate.of(2024, 2, 24),
+                12347L,
+                RentalStatus.RESERVED));
     }
 }

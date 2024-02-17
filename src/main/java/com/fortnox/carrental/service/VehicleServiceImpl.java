@@ -17,7 +17,7 @@ public class VehicleServiceImpl implements VehicleService{
     @Override
     @Transactional
     public Vehicle saveVehicle(Vehicle inVehicle) {
-        return vehicleRepository.save(inVehicle);
+        return vehicleRepository.saveAndFlush(inVehicle);
     }
 
     @Override

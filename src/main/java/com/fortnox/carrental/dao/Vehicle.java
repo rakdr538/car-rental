@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "vehicle")
 public class Vehicle {
     @Id
+    @NotEmpty
     @Size(min = 6, message = "Registration number should have at least 6 characters.")
     @Pattern(regexp = "^[a-zA-Z0-9\\s]+$", message = "Registration number should be only alphanumeric.")
     @Column(name = "vehicle_plate_no")

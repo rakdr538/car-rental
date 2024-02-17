@@ -6,6 +6,7 @@ import com.fortnox.carrental.dao.RentingEntity;
 import com.fortnox.carrental.dao.Vehicle;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class RentalDetailsMapper {
 
@@ -16,8 +17,8 @@ public class RentalDetailsMapper {
                 .vehicleModel(rentalDetail.getVehicle().getVehicleModel())
                 .fromDate(rentalDetail.getCollectedAt())
                 .toDate(rentalDetail.getDroppedAt())
-                .totalNoOfDays(2)
-                .expectedTotalPrice(23L)
+                .totalNoOfDays((int) ChronoUnit.DAYS.between(rentalDetail.getCollectedAt(), rentalDetail.getDroppedAt()))
+                .expectedTotalPrice(rentalDetail.getTotalPriceInSek())
                 .build();
 
     }
