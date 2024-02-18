@@ -26,7 +26,7 @@ replay_pid*
 #Folders
 /target
 /.idea
-/node_modules
+webapp/node_modules
 
 #Specific Files
 vcs.xml

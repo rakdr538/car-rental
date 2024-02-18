@@ -16,8 +16,8 @@ public interface RentalDetailsRepository extends JpaRepository<RentalDetail, Int
     @Query( value = """
                 select * from rental_details
                 where rental_status in :statuses
-                and (collected_at between :from and :to
-                or dropped_at between :from and :to)
+                and
+                (collected_at, dropped_at) overlaps (:from, :to)
                 """,
             nativeQuery = true)
     List<RentalDetail> getAllRentalsBetween(@Param("statuses") List<RentalStatus> statuses,

@@ -211,7 +211,7 @@ class CarRentalApplicationIT {
         var vehicles = OBJECT_MAPPER.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<List<Vehicle>>() {
                 });
-        assertEquals(1, vehicles.size());
+        assertEquals(2, vehicles.size());
     }
 
     private CreateRentalRequest getCreateReq(String plate,
