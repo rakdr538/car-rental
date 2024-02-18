@@ -1,4 +1,11 @@
 # Read Me First
+
+Some Useful tips:
+insert into vehicle (vehicle_plate_no, manufactured_by, vehicle_model, price_per_day) values ('CSR123', 'Volvo', 'S60', 1500);
+insert into vehicle (vehicle_plate_no, manufactured_by, vehicle_model, price_per_day) values ('CSR223', 'Volkswagen', 'Golf', 1333);
+insert into vehicle (vehicle_plate_no, manufactured_by, vehicle_model, price_per_day) values ('CSR143', 'Ford', 'Mustang', 3000);
+insert into vehicle (vehicle_plate_no, manufactured_by, vehicle_model, price_per_day) values ('CSR127', 'Ford', 'Transit', 2400);
+
 Assumptions:
 * only SEK transactions.
 * Java 21 docker file.
